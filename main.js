@@ -1,6 +1,6 @@
 const fs = require('fs'); // Include Node's native file system module
 const Discord = require('discord.js'); //Include Discord js
-const Config = require('./Config.json') // Include Config.json
+const { prefix, token } = require('./Config.json') // Include Config.json
 
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
@@ -21,19 +21,27 @@ client.on("ready", () => {
 //upon recieving message
 client.on('message', message => {
 
-    if (!message.content.toLowerCase().startsWith(Config.prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
+    if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
+    let msg = message.content.slice(prefix.length).trim().split(' ')
+    let args = clean(message.content).slice(prefix.length).trim().split(' ');
+    let command = args.shift().toLowerCase();
+    let mentions = []
 
-    args = clean(message.content).slice(Config.prefix.length).trim().split(' ');
-    command = args.shift().toLowerCase();
+    for (index in msg) {
+        
+        if (getUserFromMention(msg[index])) {
+            mentions.push(clean(msg[index]));
+        }
+    }
 
     console.log(command);
     console.log(args);
-    
+    console.log(mentions);
 
     if (!client.commands.has(command)) return;
 
     try {
-        client.commands.get(command).execute(message, args, client, Discord);
+        client.commands.get(command).execute(message, args, mentions, client);
     } catch (error) {
         console.error(error);
         message.reply('there was an error trying to execute that command!');
@@ -42,11 +50,25 @@ client.on('message', message => {
 })
 
 
-client.login(Config.token);
+client.login(token);
 
 //Cleans strings from signs
 function clean(str) {
     return str
     .replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ")
     
+}
+
+function getUserFromMention(mention) {
+    if (!mention) return;
+
+    if (mention.startsWith('<@') && mention.endsWith('>')) {
+        mention = mention.slice(2, -1);
+
+        if (mention.startsWith('!')) {
+            mention = mention.slice(1);
+        }
+
+        return client.users.cache.get(mention);
+    }
 }
