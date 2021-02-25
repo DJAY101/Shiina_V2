@@ -12,12 +12,25 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+
+
 //when bot init/wakes up
 client.on("ready", () => {
 
     console.log("Shiina is online!");
 
+    jsonReader('./commands/cmdConfig.json', (err, m_cmdConfig) => {
+        if (err) {
+            console.log('Error reading file:',err);
+            return;
+        }
+        m_cmdConfig.prefix = prefix;
+        fs.writeFile('./commands/cmdConfig.json', JSON.stringify(m_cmdConfig), (err) => {
+            if (err) console.log('Error writing file:', err)
+        })
+    })
 })
+
 //upon recieving message
 client.on('message', message => {
 
@@ -71,4 +84,18 @@ function getUserFromMention(mention) {
 
         return client.users.cache.get(mention);
     }
+}
+
+function jsonReader(filePath, cb) {
+    fs.readFile(filePath, (err, fileData) => {
+        if (err) {
+            return cb && cb(err)
+        }
+        try {
+            const object = JSON.parse(fileData)
+            return cb && cb(null, object)
+        } catch(err) {
+            return cb && cb(err)
+        }
+    })
 }
