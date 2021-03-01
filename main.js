@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 client.on("ready", () => {
 
     console.log("Shiina is online!");
-
+    client.user.setActivity("Music and Drawing Manga!", { type: "LISTENING"});
     jsonReader('./commands/cmdConfig.json', (err, m_cmdConfig) => {
         if (err) {
             console.log('Error reading file:',err);
