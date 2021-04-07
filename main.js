@@ -18,7 +18,9 @@ for (const file of commandFiles) {
 client.on("ready", () => {
 
     console.log("Shiina is online!");
+    client.user.setActivity("Music and Drawing Manga!", { type: "LISTENING"});
 
+    //Copies prefix from config json to commands config.json
     jsonReader('./commands/cmdConfig.json', (err, m_cmdConfig) => {
         if (err) {
             console.log('Error reading file:',err);
@@ -29,6 +31,8 @@ client.on("ready", () => {
             if (err) console.log('Error writing file:', err)
         })
     })
+
+
 })
 
 //upon recieving message
@@ -46,10 +50,15 @@ client.on('message', message => {
             mentions.push(clean(msg[index]));
         }
     }
+    if (command == "spamkim") {
 
-    console.log(command);
-    console.log(args);
-    console.log(mentions);
+        client.users.cache.get("399925742286405633").send("OWOWOOWOWOWW")
+
+    }
+
+    console.log(`Command: ${command}`);
+    console.log(`Arguments: ${" ".join(args)}`);
+    console.log(`Mentions: ${mentions}`);
 
     if (!client.commands.has(command)) return;
 
