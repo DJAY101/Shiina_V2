@@ -57,7 +57,7 @@ client.on('message', message => {
     }
 
     console.log(`Command: ${command}`);
-    console.log(`Arguments: ${" ".join(args)}`);
+    console.log(`Arguments: ${args.join(" ")}`);
     console.log(`Mentions: ${mentions}`);
 
     if (!client.commands.has(command)) return;

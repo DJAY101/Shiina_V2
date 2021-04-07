@@ -25,9 +25,9 @@ module.exports = {
                             .setColor(embedColour);
                         message.channel.send(embed)
                     } else {
-                        message.channel.send(message.author.username + "-chan, You forgot to tell me a range. (between 5-10)");
+                        message.channel.send(message.author.username + "-chan, You forgot to tell me a range. eg.(between 5-10)");
                     } 
-                } else {message.channel.send(message.author.username + "-chan, You forgot to tell me a range. (between 5-10)");}
+                } else {message.channel.send(message.author.username + "-chan, You forgot to tell me a range. eg.(between 5-10)");}
 
             }
 
