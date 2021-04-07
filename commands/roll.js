@@ -13,8 +13,8 @@ module.exports = {
                 .setThumbnail('attachment://Dice'+ roll +'.png');
             message.channel.send(embed);
         } else if (args[0] == "a" && args[1] == "number") {
-            if (args[2] == "between") {
-                if(args.length == 4) {
+            if (args.length == 4) {
+                if(args[2] == "between") {
                     if (args[3].toString().includes('-')) {
                         const range = args[3].split('-')
                             if (parseInt(range[0]) < parseInt(range[1])) {
@@ -27,11 +27,11 @@ module.exports = {
                     } else {
                         message.channel.send(message.author.username + "-chan, You forgot to tell me a range. eg.(between 5-10)");
                     } 
-                } else {message.channel.send(message.author.username + "-chan, You forgot to tell me a range. eg.(between 5-10)");}
+                } 
 
-            }
+            } else {message.channel.send(message.author.username + "-chan, You forgot to tell me a range. eg.(between 5-10)");}
 
-        }
+        } else {message.channel.send(message.author.username + "-chan, you didn't tell me what you want to roll, a dice or a number?")}
 	},
 };
 function getRandomInt(max) {
