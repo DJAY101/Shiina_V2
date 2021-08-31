@@ -1,6 +1,7 @@
 const fs = require('fs'); // Include Node's native file system module
 const Discord = require('discord.js'); //Include Discord js
 const { prefix, token } = require('./Config.json') // Include Config.json
+const cmdConfig = require("./commands/cmdConfig.json") // includes cmdConfig
 
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
@@ -43,6 +44,14 @@ client.on('message', message => {
     let args = clean(message.content).slice(prefix.length).trim().split(' ');
     let command = args.shift().toLowerCase();
     let mentions = []
+
+    // if (msg[1] == "print") {
+    //     const embed = new Discord.MessageEmbed()
+    //     .setImage("https://cdn.discordapp.com/attachments/852030227919011882/881889055711825940/b963c297-aa28-4498-95b5-ee0734c526c4.png")
+    //     .setColor(cmdConfig.embedColour);
+
+    //     message.channel.send(embed);
+    // }
 
     for (index in msg) {
         
