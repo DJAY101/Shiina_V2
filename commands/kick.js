@@ -7,7 +7,7 @@ module.exports = {
         
         const embed = new Discord.MessageEmbed();
         if (message.member.hasPermission("KICK_MEMBERS")) {
-            if(mentions.length != 0 && message.guild.member(mentions[0]).kickable && message.guild.me.hasPermission("KICK_MEMBERS")) {
+            if(mentions.length != 0 && message.guild.member(mentions[0]).kickable && message.guild.me.hasPermission("KICK_MEMBERS") && client.users.cache.get(mentions[0]).username != message.author.username) {
                 embed
                   .setTitle(client.users.cache.get(mentions[0]).username + " has been kicked")
                   .setThumbnail("https://c.tenor.com/DLbH0i7N7yIAAAAd/bay-anime-bye-anime.gif")

@@ -1,7 +1,8 @@
 const fs = require('fs'); // Include Node's native file system module
 const Discord = require('discord.js'); //Include Discord js
 const { prefix, token } = require('./Config.json') // Include Config.json
-const cmdConfig = require("./commands/cmdConfig.json") // includes cmdConfig
+const cmdConfig = require("./commands/cmdConfig.json"); // includes cmdConfig
+const { timeStamp } = require('console');
 
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
@@ -21,6 +22,8 @@ client.on("ready", () => {
     console.log("Shiina is online!");
     client.user.setActivity("Music and Drawing Manga!", { type: "LISTENING"});
 
+    
+
     //Copies prefix from config json to commands config.json
     jsonReader('./commands/cmdConfig.json', (err, m_cmdConfig) => {
         if (err) {
@@ -39,11 +42,14 @@ client.on("ready", () => {
 //upon recieving message
 client.on('message', message => {
 
-    if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
     let msg = message.content.slice(prefix.length).trim().split(' ')
     let args = clean(message.content).slice(prefix.length).trim().split(' ');
     let command = args.shift().toLowerCase();
     let mentions = []
+
+
+    if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
+
 
     // if (msg[1] == "print") {
     //     const embed = new Discord.MessageEmbed()
@@ -79,6 +85,23 @@ client.on('message', message => {
     }
 
 })
+
+
+client.on('messageDelete', message => {
+
+    const embed = new Discord.MessageEmbed()
+    .setColor(cmdConfig.embedColour)
+    .setAuthor(message.author.username + "#" + message.author.discriminator, message.author.avatarURL({dynamic:true}))
+    .setFooter("Author ID: " + message.author.id)
+    .setTimestamp()
+    .addField("Deleted Message", message.content)
+    .setDescription("**<@" + message.author.id + "> deleted a message in <#" + message.channel.id + ">:**");
+
+    client.channels.cache.get("882486369841197106").send(embed);
+
+
+})
+
 
 
 client.login(token);
