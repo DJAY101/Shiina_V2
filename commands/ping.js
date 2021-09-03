@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Ping!',
 	execute(message, args, mentions, client) {
 		
-		message.channel.send('Loading data').then (async (msg) =>{
+		message.channel.send('Loading data').then((msg) =>{
 			msg.delete();
 			const embed = new Discord.MessageEmbed()
 			.setColor(embedColour)

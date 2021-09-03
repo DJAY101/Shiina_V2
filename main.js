@@ -21,7 +21,7 @@ client.on("ready", () => {
 
     console.log("Shiina is online!");
     client.user.setActivity("Music and Drawing Manga!", { type: "LISTENING"});
-
+    //client.users.fetch("453512559388000257").then(user => console.log(user.username))
     
 
     //Copies prefix from config json to commands config.json
@@ -49,7 +49,23 @@ client.on('message', message => {
 
 
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
+    
+    // Shiina question n reply command
+    if(command == "is" || command == "am" || command == "are") {
+        const embed = new Discord.MessageEmbed()
+        .setColor(cmdConfig.embedColour);
 
+        if (Boolean(+Date.now()%2)) {
+            embed.setDescription("No");
+            message.channel.send(embed);
+            return;
+        } else {
+            embed.setDescription("Yes");
+            message.channel.send(embed);
+            return;
+        }
+    }
+    
 
     // if (msg[1] == "print") {
     //     const embed = new Discord.MessageEmbed()
@@ -88,13 +104,13 @@ client.on('message', message => {
 
 
 client.on('messageDelete', message => {
-
+    
     const embed = new Discord.MessageEmbed()
     .setColor(cmdConfig.embedColour)
     .setAuthor(message.author.username + "#" + message.author.discriminator, message.author.avatarURL({dynamic:true}))
     .setFooter("Author ID: " + message.author.id)
     .setTimestamp()
-    .addField("Deleted Message", message.content)
+    .addField("Deleted Message", (message.content)?message.content:"```DELETED IMAGE```")
     .setDescription("**<@" + message.author.id + "> deleted a message in <#" + message.channel.id + ">:**");
 
     client.channels.cache.get("882486369841197106").send(embed);
