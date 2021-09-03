@@ -51,7 +51,7 @@ client.on('message', message => {
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
     
     // Shiina question n reply command
-    if(command == "is" || command == "am" || command == "are") {
+    if(command == "is" || command == "am" || command == "are" || command == "should" || command == "will") {
         const embed = new Discord.MessageEmbed()
         .setColor(cmdConfig.embedColour);
 
