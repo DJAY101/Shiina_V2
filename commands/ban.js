@@ -12,9 +12,6 @@ module.exports = {
         //const banMember = (!mentions[0] && message.guild.members.fetch(args[0]).then(()=> {return true}).catch(() => {return false}) ) ? args[0] : mentions[0]
         const banReason = args.slice(1).join(' ');
 
-        console.log(message.guild.members.fetch(args[0]).then(()=> {return true}).catch(() => {return false}))
-        //console.log(banMember)
-
         checkBanUser(message, mentions, args).then((banMember) => {
           console.log(banMember);
         if (message.member.hasPermission("BAN_MEMBERS")) {
