@@ -23,7 +23,12 @@ module.exports = {
             message.channel.bulkDelete(parseInt(args[0], 10));
         }
 
-        message.channel.send(embed);
+        message.channel.send(embed).then(async(msg) => {
+
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            msg.delete();
+
+        })
 	},
 };
 

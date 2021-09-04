@@ -13,19 +13,23 @@ module.exports = {
             if(message.guild.me.hasPermission("BAN_MEMBERS")) {
 
                 if (args[0]) {
-                message.guild.fetchBans().then((bans) => {
+                message.guild.fetchBans().then(async (bans) => {
                     if(bans.get(args[0]) == null) {
                         embed
                         .setDescription("that isn't a valid user that I can unban~")
                         message.channel.send(embed);
                     } else {
-                        message.guild.members.unban(args[0]).then(async()=>{
+
+                        const unbanUser = await client.users.fetch(args[0])
+
+                        message.guild.members.unban(unbanUser, args.slice(1).join(" ")).then(async()=>{
                             let user = await client.users.fetch(args[0]);
                             return user;
                         }).then((user)=>{
                             embed
                             .setThumbnail("https://c.tenor.com/uGN3n2O03GIAAAAC/anime-wave.gif")
                             .setAuthor(user.username + "#" + user.discriminator, user.avatarURL({dynamic:true}))
+                            .addField("Reason", (args.slice(1).join(" ") ? args.slice(1).join(" ") : "Not Provided"))
                             .setDescription(`I have successfully unbanned **${user.username}** :3`);
                             message.channel.send(embed);
                         })
