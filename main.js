@@ -1,6 +1,6 @@
 const fs = require('fs'); // Include Node's native file system module
 const Discord = require('discord.js'); //Include Discord js
-const { prefix, token } = require('./Config.json') // Include Config.json
+const { prefix, token, ownerID } = require('./Config.json') // Include Config.json
 const cmdConfig = require("./commands/cmdConfig.json"); // includes cmdConfig
 const { timeStamp } = require('console');
 
@@ -31,6 +31,7 @@ client.on("ready", () => {
             return;
         }
         m_cmdConfig.prefix = prefix;
+        m_cmdConfig.ownerID = ownerID;
         fs.writeFile('./commands/cmdConfig.json', JSON.stringify(m_cmdConfig), (err) => {
             if (err) console.log('Error writing file:', err)
         })
@@ -81,11 +82,7 @@ client.on('message', message => {
             mentions.push(clean(msg[index]));
         }
     }
-    if (command == "spamkim") {
 
-        client.users.cache.get("399925742286405633").send("OWOWOOWOWOWW")
-
-    }
     console.log(`Author: ${message.author.username +"#"+ message.author.discriminator}`)
     console.log(`Command: ${command}`);
     console.log(`Arguments: ${args.join(" ")}`);
@@ -111,7 +108,7 @@ client.on('messageDelete', message => {
     .setAuthor(message.author.username + "#" + message.author.discriminator, message.author.avatarURL({dynamic:true}))
     .setFooter("Author ID: " + message.author.id)
     .setTimestamp()
-    .addField("Deleted Message", (message.content)?message.content:"```DELETED IMAGE```")
+    .addField("Deleted Message", (message.content)?message.content:"```DELETED IMAGE/EMBED```")
     .setDescription("**<@" + message.author.id + "> deleted a message in <#" + message.channel.id + ">:**");
 
     client.channels.cache.get("882486369841197106").send(embed);
