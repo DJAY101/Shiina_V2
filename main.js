@@ -86,10 +86,11 @@ client.on('message', message => {
         client.users.cache.get("399925742286405633").send("OWOWOOWOWOWW")
 
     }
-
+    console.log(`Author: ${message.author.username +"#"+ message.author.discriminator}`)
     console.log(`Command: ${command}`);
     console.log(`Arguments: ${args.join(" ")}`);
     console.log(`Mentions: ${mentions}`);
+    
 
     if (!client.commands.has(command)) return;
 

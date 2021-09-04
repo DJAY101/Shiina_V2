@@ -16,14 +16,22 @@ module.exports = {
                 message.guild.fetchBans().then((bans) => {
                     if(bans.get(args[0]) == null) {
                         embed
-                        .setDescription("that isn't a valid user that I can unban TwT")
+                        .setDescription("that isn't a valid user that I can unban~")
+                        message.channel.send(embed);
                     } else {
-                        message.guild.members.unban(args[0])
-                        embed
-                        .setThumbnail("https://c.tenor.com/uGN3n2O03GIAAAAC/anime-wave.gif")
-                        .setDescription(`I have successfully unbanned **${client.users.cache.find(user => user.id === args[0]).username}** :3`)
+                        message.guild.members.unban(args[0]).then(async()=>{
+                            let user = await client.users.fetch(args[0]);
+                            return user;
+                        }).then((user)=>{
+                            embed
+                            .setThumbnail("https://c.tenor.com/uGN3n2O03GIAAAAC/anime-wave.gif")
+                            .setAuthor(user.username + "#" + user.discriminator, user.avatarURL({dynamic:true}))
+                            .setDescription(`I have successfully unbanned **${user.username}** :3`);
+                            message.channel.send(embed);
+                        })
+
                     }
-                    message.channel.send(embed);
+                    
                     
 
                 }).catch((err)=>{console.error(err)})
