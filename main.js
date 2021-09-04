@@ -52,7 +52,7 @@ client.on('message', message => {
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
     
     // Shiina question n reply command
-    if(command == "is" || command == "am" || command == "are" || command == "should" || command == "will") {
+    if(command == "is" || command == "am" || command == "are" || command == "should" || command == "will"|| command == "was") {
         const embed = new Discord.MessageEmbed()
         .setColor(cmdConfig.embedColour);
 
@@ -114,6 +114,24 @@ client.on('messageDelete', message => {
 
     client.channels.cache.get("882486369841197106").send(embed);
 
+
+})
+
+client.on('messageUpdate', (oldMsg, newMsg) => {
+
+    const embed = new Discord.MessageEmbed()
+    .setColor(cmdConfig.embed)
+    .setAuthor(oldMsg.author.tag, oldMsg.author.avatarURL({dynamic:true}))
+    .setFooter("Author ID:" + oldMsg.author.id)
+    .setTimestamp()
+    .setURL(newMsg.url)
+    .setTitle("Jump to message")
+    .setDescription("**<@" + oldMsg.author.id + "> edited a message in <#"+oldMsg.channel.id + ">**")
+    .addFields(
+        {name: "Before", value:(oldMsg.content)?oldMsg.content:"```IMAGE/EMBED```"},
+        {name: "After", value:(newMsg.content)?newMsg.content:"```IMAGE/EMBED```"}
+    );
+    client.channels.cache.get("882486369841197106").send(embed);
 
 })
 
