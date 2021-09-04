@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'ping',
 	description: 'Ping!',
+	DMCommand: true,
 	execute(message, args, mentions, client) {
 		
 		message.channel.send('Loading data').then((msg) =>{

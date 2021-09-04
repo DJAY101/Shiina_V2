@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'roll',
 	description: 'Rolls a dice',
+    DMCommand: true,
 	execute(message, args, mentions, client) {
         if (args[0] == "a" && args[1] == "dice") {
             var roll = getRandomInt(6) + 1;

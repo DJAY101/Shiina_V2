@@ -90,6 +90,7 @@ client.on('message', message => {
     
 
     if (!client.commands.has(command)) return;
+    if (message.guild == null && !client.commands.get(command).DMCommand == true) return;
 
     try {
         client.commands.get(command).execute(message, args, mentions, client);

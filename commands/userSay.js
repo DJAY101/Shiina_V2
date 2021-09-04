@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'say',
 	description: 'The user says',
+    DMCommand: true,
 	execute(message, args, mentions, client) {
         message.delete();
         msg = message.content.slice(prefix.length + 4)

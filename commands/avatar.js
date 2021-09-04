@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'avatar',
 	description: 'Displays users avatar',
+    DMCommand: true,
 	execute(message, args, mentions, client) { 
 
         const embed = new Discord.MessageEmbed(); // create embed

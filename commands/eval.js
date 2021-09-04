@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'eval',
 	description: 'run any js command',
+    DMCommand: true,
 	execute(message, args, mentions, client) {
 	const args1 = message.content.split(" ").slice(2);
     if(message.author.id !== ownerID) return;

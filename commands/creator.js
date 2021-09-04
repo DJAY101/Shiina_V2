@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'creator',
 	description: 'Displays information about the creator and myself',
+    DMCommand: true,
 	execute(message, args, mentions, client) {
         const embed = new Discord.MessageEmbed()
             .setTitle("__About me!!!__")
