@@ -42,7 +42,8 @@ client.on("ready", () => {
 
 //upon recieving message
 client.on('message', message => {
-
+    //if (message.content.includes("https://youtu.be/4nktf9m-ITY")) {message.delete()}
+    //if (message.author.id == "808634494931566602") {message.delete()}
     let msg = message.content.slice(prefix.length).trim().split(' ')
     let args = clean(message.content).slice(prefix.length).trim().split(' ');
     let command = args.shift().toLowerCase();
@@ -118,9 +119,9 @@ client.on('messageDelete', message => {
 })
 
 client.on('messageUpdate', (oldMsg, newMsg) => {
-
+    if (oldMsg.content != newMsg.content) {
     const embed = new Discord.MessageEmbed()
-    .setColor(cmdConfig.embed)
+    .setColor(cmdConfig.embedColour)
     .setAuthor(oldMsg.author.tag, oldMsg.author.avatarURL({dynamic:true}))
     .setFooter("Author ID:" + oldMsg.author.id)
     .setTimestamp()
@@ -128,11 +129,12 @@ client.on('messageUpdate', (oldMsg, newMsg) => {
     .setTitle("Jump to message")
     .setDescription("**<@" + oldMsg.author.id + "> edited a message in <#"+oldMsg.channel.id + ">**")
     .addFields(
+        {name: "Message ID", value:newMsg.id},
         {name: "Before", value:(oldMsg.content)?oldMsg.content:"```IMAGE/EMBED```"},
         {name: "After", value:(newMsg.content)?newMsg.content:"```IMAGE/EMBED```"}
     );
     client.channels.cache.get("882486369841197106").send(embed);
-
+    }
 })
 
 
