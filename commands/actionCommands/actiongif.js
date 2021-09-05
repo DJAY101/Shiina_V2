@@ -21,7 +21,7 @@ module.exports = {
                     throw err;
               }
               cache = JSON.parse(data.toString());
-              if(cache[command+"Gifs"] && ((Date.now()/1000) - (cache[command+"Time"]/1000)) < 600) {
+              if(cache[command+"Gifs"] && ((Date.now()/1000) - (cache[command+"Time"]/1000)) < 3600) {
                   embed
                   .setDescription((args[0] == "me") ? message.author.username + "is getting a " + action + " by me!" : message.author.username + " is giving " + client.users.cache.get(mentions[0]).username + " a " + action + "\n" + message.content.split(" ").slice(3).join(" "))
                   .setImage(cache[command+"Gifs"][Math.round(Math.random()*(cache[command+"Gifs"].length-1))]);

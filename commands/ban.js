@@ -20,11 +20,11 @@ module.exports = {
             
             if(banMember != null) {
               if (banMember != message.author.id) {
-                if (!message.guild.members.fetch(banMember).then((member)=>{member.bannable})) {embed.setDescription("I can't ban that person~"); message.channel.send(embed) ;return;}
-
-
-
+                
+                
+                
                 message.guild.members.fetch(banMember).then((member) =>{
+                  if (!member.bannable) {embed.setDescription("I can't ban that person~"); message.channel.send(embed) ;return;}
                   embed
                   .setAuthor(member.user.username + "#" + member.user.discriminator, member.user.avatarURL({dynamic:true}))
                   .setTitle("**" + member.user.username +"#"+ member.user.discriminator +"** has been banned")

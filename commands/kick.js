@@ -18,11 +18,11 @@ module.exports = {
       
       if(kickMember != null) {
         if (kickMember != message.author.id) {
-          if (!message.guild.members.fetch(kickMember).then((member)=>{member.kickable})) {embed.setDescription("I can't kick that person~"); message.channel.send(embed) ;return;}
-
-
-
+          
+          
+          
           message.guild.members.fetch(kickMember).then((member) =>{
+            if (!member.kickable) {embed.setDescription("I can't kick that person~"); message.channel.send(embed) ;return;}
             embed
             .setAuthor(member.user.username + "#" + member.user.discriminator, member.user.avatarURL({dynamic:true}))
             .setTitle("**" + member.user.username +"#"+ member.user.discriminator +"** has been kicked")

@@ -64,9 +64,9 @@ client.on('message', message => {
     let args = clean(message.content).slice(prefix.length).trim().split(' ');
     let command = args.shift().toLowerCase();
     let mentions = [];
-    const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill"];
-    const individualAction = ["blush", "cry", "hide", "peak", "smug", "smirk", "smile", "sad", "dead"]
-    const questionCommands = ["is", "am", "are", "should", "will", "was", "do"];
+    const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill", "snuggle"];
+    const individualAction = ["blush", "cry", "hide", "peak", "smug", "smirk", "smile", "sad", "dead", "wave", "run", "laugh", "pout"]
+    const questionCommands = ["is", "am", "are", "should", "will", "was", "do", "does"];
 
 
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end

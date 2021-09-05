@@ -14,9 +14,17 @@ module.exports = {
         if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
 
-        message.channel.send(clean(evaled), {code:"xl"});
+            if(clean(evaled).length < 2000) {
+                message.channel.send(clean(evaled), {code:"xl"});
+            }else {
+                message.channel.send(`\`Eval too long to display\``)
+            }
         } catch (err) {
-        message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+            if (`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``.length < 2000) {
+                message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+            } else {
+                message.channel.send(`\`ERROR\` \`\`\`Error too long to display\n\`\`\``)
+            }
     }
 
 	},
