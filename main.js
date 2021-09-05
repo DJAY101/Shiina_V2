@@ -7,11 +7,24 @@ const { timeStamp } = require('console');
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
 
+const Tenor = require("tenorjs").client({
+    "Key": "X4BYF1VM9A36", // https://tenor.com/developer/keyregistration
+    "Filter": "low", // "off", "low", "medium", "high", not case sensitive
+    "Locale": "en_US", // Your locale here, case-sensitivity depends on input
+    "MediaFilter": "minimal", // either minimal or basic, not case sensitive
+    "DateFormat": "D/MM/YYYY - H:mm:ss A" // Change this accordingly
+});
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js')); //Place all cmds in a array
+const actionCommandFiles = fs.readdirSync('./commands/actionCommands').filter(file => file.endsWith('.js'));
 // sets commands for client
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
+}
+for (const file of actionCommandFiles) {
+    const command = require(`./commands/actionCommands/${file}`);
+    client.commands.set(command.name, command);
 }
 
 
@@ -22,8 +35,8 @@ client.on("ready", () => {
     console.log("Shiina is online!");
     client.user.setActivity("Music and Drawing Manga!", { type: "LISTENING"});
     //client.users.fetch("453512559388000257").then(user => console.log(user.username))
-    
 
+  
     //Copies prefix from config json to commands config.json
     jsonReader('./commands/cmdConfig.json', (err, m_cmdConfig) => {
         if (err) {
@@ -33,7 +46,10 @@ client.on("ready", () => {
         m_cmdConfig.prefix = prefix;
         m_cmdConfig.ownerID = ownerID;
         fs.writeFile('./commands/cmdConfig.json', JSON.stringify(m_cmdConfig), (err) => {
-            if (err) console.log('Error writing file:', err)
+            if (err) console.log('Error writing file:', err);
+        })
+        fs.writeFile('./commands/actionCommands/cmdConfig.json', JSON.stringify(m_cmdConfig), err => {
+            if (err) console.log('Error writing file:', err);
         })
     })
 
@@ -47,13 +63,21 @@ client.on('message', message => {
     let msg = message.content.slice(prefix.length).trim().split(' ')
     let args = clean(message.content).slice(prefix.length).trim().split(' ');
     let command = args.shift().toLowerCase();
-    let mentions = []
+    let mentions = [];
+    const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill"];
+    const individualAction = ["blush", "cry", "hide", "peak", "smug", "smirk", "smile", "sad", "dead"]
+    const questionCommands = ["is", "am", "are", "should", "will", "was", "do"];
 
 
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
     
+    console.log(`Author: ${message.author.username +"#"+ message.author.discriminator}`)
+    console.log(`Command: ${command}`);
+    console.log(`Arguments: ${args.join(" ")}`);
+    console.log(`Mentions: ${mentions}`);
+
     // Shiina question n reply command
-    if(command == "is" || command == "am" || command == "are" || command == "should" || command == "will"|| command == "was") {
+    if(questionCommands.includes(command)) {
         const embed = new Discord.MessageEmbed()
         .setColor(cmdConfig.embedColour);
 
@@ -67,7 +91,34 @@ client.on('message', message => {
             return;
         }
     }
+    for (index in msg) {
+        
+        if (getUserFromMention(msg[index])) {
+            mentions.push(clean(msg[index]));
+        }
+    }
     
+    if(actionCommands.includes(command)) {
+        if(command == "peck") {command = "kiss"}
+        try {
+            client.commands.get("actiongif").execute(message, args, mentions, client, Tenor, command);
+
+        } catch (error) {
+            console.log(error);
+            message.reply("there was an error trying to execute that command!");
+        }
+        return;
+    }
+    if (individualAction.includes(command)) {
+        try {
+            client.commands.get("individualActions").execute(message, args, mentions, client, Tenor, command);
+
+        } catch (error) {
+            console.log(error);
+            message.reply("there was an error trying to execute that command!");
+        }
+        return;
+    }
 
     // if (msg[1] == "print") {
     //     const embed = new Discord.MessageEmbed()
@@ -77,17 +128,9 @@ client.on('message', message => {
     //     message.channel.send(embed);
     // }
 
-    for (index in msg) {
-        
-        if (getUserFromMention(msg[index])) {
-            mentions.push(clean(msg[index]));
-        }
-    }
 
-    console.log(`Author: ${message.author.username +"#"+ message.author.discriminator}`)
-    console.log(`Command: ${command}`);
-    console.log(`Arguments: ${args.join(" ")}`);
-    console.log(`Mentions: ${mentions}`);
+
+
     
 
     if (!client.commands.has(command)) return;
