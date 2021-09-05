@@ -119,6 +119,16 @@ client.on('message', message => {
         }
         return;
     }
+    if(command == "search") {
+        try {
+            client.commands.get("search").execute(message, args, mentions, client, Tenor);
+
+        } catch (error) {
+            console.log(error);
+            message.reply("there was an error trying to execute that command!");
+        }
+        return;
+    }
 
     // if (msg[1] == "print") {
     //     const embed = new Discord.MessageEmbed()
