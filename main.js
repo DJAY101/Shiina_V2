@@ -1,12 +1,21 @@
+// import { initializeApp } from 'firebase/app';
+const admin = require('firebase-admin')
 const fs = require('fs'); // Include Node's native file system module
 const Discord = require('discord.js'); //Include Discord js
 const { prefix, token, ownerID } = require('./Config.json') // Include Config.json
 const cmdConfig = require("./commands/cmdConfig.json"); // includes cmdConfig
 const { timeStamp } = require('console');
-const firebase = require("firebase")
 
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
+
+const serviceAccount = require('./shiina-discord-bot-firebase-adminsdk-wg1mj-df7f037787.json')
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://shiina-discord-bot-default-rtdb.firebaseio.com"
+  });
+
+const database = admin.database();
 
 const Tenor = require("tenorjs").client({
     "Key": "X4BYF1VM9A36", // https://tenor.com/developer/keyregistration
@@ -31,13 +40,13 @@ for (const file of actionCommandFiles) {
 
 
 //when bot init/wakes up
-client.on("ready", () => {
+client.on("ready", async() => {
 
     console.log("Shiina is online!");
     client.user.setActivity("Music and Drawing Manga!", { type: "LISTENING"});
     //client.users.fetch("453512559388000257").then(user => console.log(user.username))
 
-  
+
     //Copies prefix from config json to commands config.json
     jsonReader('./commands/cmdConfig.json', (err, m_cmdConfig) => {
         if (err) {
@@ -148,7 +157,7 @@ client.on('message', message => {
     if (message.guild == null && !client.commands.get(command).DMCommand == true) return;
 
     try {
-        client.commands.get(command).execute(message, args, mentions, client);
+        client.commands.get(command).execute(message, args, mentions, client, database);
     } catch (error) {
         console.error(error);
         message.reply('there was an error trying to execute that command!');
