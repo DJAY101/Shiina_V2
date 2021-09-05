@@ -1,7 +1,6 @@
 {
   "name": "shiina_v2",
   "version": "2.0.0",
-  "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +9,18 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "firebase": "^9.0.1",
+    "firebase-admin": "^9.11.1",
     "tenorjs": "^1.0.8",
     "ws": "^8.2.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJAY101/Shiina_V2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DJAY101/Shiina_V2/issues"
+  },
+  "homepage": "https://github.com/DJAY101/Shiina_V2#readme",
+  "description": ""
 }

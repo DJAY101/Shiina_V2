@@ -3,6 +3,7 @@ const Discord = require('discord.js'); //Include Discord js
 const { prefix, token, ownerID } = require('./Config.json') // Include Config.json
 const cmdConfig = require("./commands/cmdConfig.json"); // includes cmdConfig
 const { timeStamp } = require('console');
+const firebase = require("firebase")
 
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
