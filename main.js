@@ -9,7 +9,8 @@ const { timeStamp } = require('console');
 const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
 
-const serviceAccount = require('./shiina-discord-bot-firebase-adminsdk-wg1mj-df7f037787.json')
+const serviceAccount = require('./shiina-discord-bot-firebase-adminsdk-wg1mj-df7f037787.json');
+const individualActions = require('./commands/actionCommands/individualActions');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://shiina-discord-bot-default-rtdb.firebaseio.com"
@@ -70,12 +71,18 @@ client.on("ready", async() => {
 client.on('message', message => {
     //if (message.content.includes("https://youtu.be/4nktf9m-ITY")) {message.delete()}
     //if (message.author.id == "808634494931566602") {message.delete()}
+
+    if (message.author.id == "235148962103951360" && message.guild.id == "881794935395844137") {
+        message.delete();
+        message.channel.send("Kills carlies msg").then((msg)=>{msg.delete();})
+    }
+
     let msg = message.content.slice(prefix.length).trim().split(' ')
     let args = clean(message.content).slice(prefix.length).trim().split(' ');
     let command = args.shift().toLowerCase();
     let mentions = [];
     const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill", "snuggle"];
-    const individualAction = ["blush", "cry", "hide", "peak", "smug", "smirk", "smile", "sad", "dead", "wave", "run", "laugh", "pout"]
+    const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peak":"peaking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking"}
     const questionCommands = ["is", "am", "are", "should", "will", "was", "do", "does"];
 
 
@@ -119,9 +126,10 @@ client.on('message', message => {
         }
         return;
     }
-    if (individualAction.includes(command)) {
+
+    if (individualAction.hasOwnProperty(command)) {
         try {
-            client.commands.get("individualActions").execute(message, args, mentions, client, Tenor, command);
+            client.commands.get("individualActions").execute(message, args, mentions, client, Tenor, command, individualAction[command]);
 
         } catch (error) {
             console.log(error);
@@ -166,38 +174,63 @@ client.on('message', message => {
 })
 
 
-client.on('messageDelete', message => {
-    
-    const embed = new Discord.MessageEmbed()
-    .setColor(cmdConfig.embedColour)
-    .setAuthor(message.author.username + "#" + message.author.discriminator, message.author.avatarURL({dynamic:true}))
-    .setFooter("Author ID: " + message.author.id)
-    .setTimestamp()
-    .addField("Deleted Message", (message.content)?message.content:"```DELETED IMAGE/EMBED```")
-    .setDescription("**<@" + message.author.id + "> deleted a message in <#" + message.channel.id + ">:**");
+client.on('messageDelete', async message => {
+    database.goOnline();
 
-    client.channels.cache.get("882486369841197106").send(embed);
+    await database.ref("/Servers").once("value", async (data) =>{
+        for(const[key, serverData] of Object.entries(data.val())) {
+            if(serverData["LogChannel"] && serverData["ID"] == message.guild.id) {
+
+                const embed = new Discord.MessageEmbed()
+                .setColor(cmdConfig.embedColour)
+                .setAuthor(message.author.username + "#" + message.author.discriminator, message.author.avatarURL({dynamic:true}))
+                .setFooter("Author ID: " + message.author.id)
+                .setTimestamp()
+                .addField("Deleted Message", (message.content)?message.content:"```DELETED IMAGE/EMBED```")
+                .setDescription("**<@" + message.author.id + "> deleted a message in <#" + message.channel.id + ">:**");
+                try{
+                   await client.channels.cache.get(serverData["LogChannel"]).send(embed);
+                } catch(err) {
+                    console.log(err);
+                }
+                return;
+                
+            }
+        }
+    })
+ 
+
 
 
 })
 
-client.on('messageUpdate', (oldMsg, newMsg) => {
-    if (oldMsg.content != newMsg.content) {
-    const embed = new Discord.MessageEmbed()
-    .setColor(cmdConfig.embedColour)
-    .setAuthor(oldMsg.author.tag, oldMsg.author.avatarURL({dynamic:true}))
-    .setFooter("Author ID:" + oldMsg.author.id)
-    .setTimestamp()
-    .setURL(newMsg.url)
-    .setTitle("Jump to message")
-    .setDescription("**<@" + oldMsg.author.id + "> edited a message in <#"+oldMsg.channel.id + ">**")
-    .addFields(
-        {name: "Message ID", value:newMsg.id},
-        {name: "Before", value:(oldMsg.content)?oldMsg.content:"```IMAGE/EMBED```"},
-        {name: "After", value:(newMsg.content)?newMsg.content:"```IMAGE/EMBED```"}
-    );
-    client.channels.cache.get("882486369841197106").send(embed);
-    }
+client.on('messageUpdate', async (oldMsg, newMsg) => {
+    database.goOnline();
+    await database.ref("/Servers").once("value", async (data) =>{
+        for(const[key, serverData] of Object.entries(data.val())) {
+            if(serverData["LogChannel"] && serverData["ID"] == newMsg.guild.id) {
+                if (oldMsg.content != newMsg.content) {
+                const embed = new Discord.MessageEmbed()
+                .setColor(cmdConfig.embedColour)
+                .setAuthor(oldMsg.author.tag, oldMsg.author.avatarURL({dynamic:true}))
+                .setFooter("Author ID:" + oldMsg.author.id)
+                .setTimestamp()
+                .setURL(newMsg.url)
+                .setTitle("Jump to message")
+                .setDescription("**<@" + oldMsg.author.id + "> edited a message in <#"+oldMsg.channel.id + ">**")
+                .addFields(
+                    {name: "Message ID", value:newMsg.id},
+                    {name: "Before", value:(oldMsg.content)?oldMsg.content:"```IMAGE/EMBED```"},
+                    {name: "After", value:(newMsg.content)?newMsg.content:"```IMAGE/EMBED```"}
+                );
+                try{
+                await client.channels.cache.get(serverData["LogChannel"]).send(embed);
+                } catch(err){console.log(err)};
+                return;
+                }
+            }
+        }
+    })
 })
 
 

@@ -6,9 +6,9 @@ module.exports = {
 	name: 'individualActions',
 	description: 'displays an individual action',
 	DMCommand: true,
-	execute(message, args, mentions, client, tenor, command) {
-        let args1 = clean(message.content).slice(prefix.length).trim().split(' ');
-        let action = args1.shift().toLowerCase();
+	execute(message, args, mentions, client, tenor, command, action) {
+      //   let args1 = clean(message.content).slice(prefix.length).trim().split(' ');
+      //   let action = args1.shift().toLowerCase();
 
         var posts = [];
         const embed = new Discord.MessageEmbed()
@@ -23,7 +23,7 @@ module.exports = {
               cache = JSON.parse(data.toString());
               if(cache[command+"Gifs"] && ((Date.now()/1000) - (cache[command+"Time"]/1000)) < 600) {
                   embed
-                  .setDescription(message.author.username + " is " + action + "ing")
+                  .setDescription(message.author.username + " is " + action)
                   .setImage(cache[command+"Gifs"][Math.round(Math.random()*(cache[command+"Gifs"].length-1))]);
                   message.channel.send(embed);
               } else {
@@ -35,7 +35,7 @@ module.exports = {
                         });
             
                         embed
-                        .setDescription(message.author.username + " is " + action + "ing")
+                        .setDescription(message.author.username + " is " + action)
                         .setImage(posts[Math.round(Math.random()*(posts.length-1))]);
                         message.channel.send(embed);
 

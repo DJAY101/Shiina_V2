@@ -27,7 +27,7 @@ module.exports = {
                   .setImage(cache[command+"Gifs"][Math.round(Math.random()*(cache[command+"Gifs"].length-1))]);
                   message.channel.send(embed);
               } else {
-                  tenor.Search.Query("anime " + command, "50").then(Results => {
+                  tenor.Search.Query("anime " + command, "20").then(Results => {
                         Results.forEach(Post => {
                               //console.log(`Item #${Post.id} (Created: ${Post.created}) @ ${Post.url}`);
                               posts.push(Post.media[0].gif.url)
