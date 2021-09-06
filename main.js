@@ -82,7 +82,7 @@ client.on('message', message => {
     let command = args.shift().toLowerCase();
     let mentions = [];
     const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill", "snuggle"];
-    const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peak":"peaking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking"}
+    const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peak":"peaking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking", "confused":"confused"}
     const questionCommands = ["is", "am", "are", "should", "will", "was", "do", "does"];
 
 
@@ -175,8 +175,8 @@ client.on('message', message => {
 
 
 client.on('messageDelete', async message => {
+    if(message.author.bot) {return};
     database.goOnline();
-
     await database.ref("/Servers").once("value", async (data) =>{
         for(const[key, serverData] of Object.entries(data.val())) {
             if(serverData["LogChannel"] && serverData["ID"] == message.guild.id) {
@@ -186,8 +186,12 @@ client.on('messageDelete', async message => {
                 .setAuthor(message.author.username + "#" + message.author.discriminator, message.author.avatarURL({dynamic:true}))
                 .setFooter("Author ID: " + message.author.id)
                 .setTimestamp()
-                .addField("Deleted Message", (message.content)?message.content:"```DELETED IMAGE/EMBED```")
+                .addField("Deleted Message", (message.content)?message.content:"```Image```")
                 .setDescription("**<@" + message.author.id + "> deleted a message in <#" + message.channel.id + ">:**");
+                if(message.attachments.first()) {
+                    embed.setImage(message.attachments.first().proxyURL)
+                }
+                
                 try{
                    await client.channels.cache.get(serverData["LogChannel"]).send(embed);
                 } catch(err) {
@@ -205,11 +209,13 @@ client.on('messageDelete', async message => {
 })
 
 client.on('messageUpdate', async (oldMsg, newMsg) => {
+    if(newMsg.author.bot) return;
     database.goOnline();
     await database.ref("/Servers").once("value", async (data) =>{
         for(const[key, serverData] of Object.entries(data.val())) {
             if(serverData["LogChannel"] && serverData["ID"] == newMsg.guild.id) {
                 if (oldMsg.content != newMsg.content) {
+
                 const embed = new Discord.MessageEmbed()
                 .setColor(cmdConfig.embedColour)
                 .setAuthor(oldMsg.author.tag, oldMsg.author.avatarURL({dynamic:true}))
@@ -220,8 +226,8 @@ client.on('messageUpdate', async (oldMsg, newMsg) => {
                 .setDescription("**<@" + oldMsg.author.id + "> edited a message in <#"+oldMsg.channel.id + ">**")
                 .addFields(
                     {name: "Message ID", value:newMsg.id},
-                    {name: "Before", value:(oldMsg.content)?oldMsg.content:"```IMAGE/EMBED```"},
-                    {name: "After", value:(newMsg.content)?newMsg.content:"```IMAGE/EMBED```"}
+                    {name: "Before", value:oldMsg.content},
+                    {name: "After", value:newMsg.content}
                 );
                 try{
                 await client.channels.cache.get(serverData["LogChannel"]).send(embed);
