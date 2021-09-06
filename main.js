@@ -175,7 +175,7 @@ client.on('message', message => {
 
 
 client.on('messageDelete', async message => {
-    if(message.author.bot) {return};
+    if(message.author.bot || message.guild == null) {return};
     database.goOnline();
     await database.ref("/Servers").once("value", async (data) =>{
         for(const[key, serverData] of Object.entries(data.val())) {
@@ -209,7 +209,7 @@ client.on('messageDelete', async message => {
 })
 
 client.on('messageUpdate', async (oldMsg, newMsg) => {
-    if(newMsg.author.bot) return;
+    if(newMsg.author.bot || message.guild == null) return;
     database.goOnline();
     await database.ref("/Servers").once("value", async (data) =>{
         for(const[key, serverData] of Object.entries(data.val())) {
