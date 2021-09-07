@@ -22,22 +22,22 @@ module.exports = {
                     return;
                 }
                 for (const [key, serverData] of Object.entries(data.val())) {
-                        console.log(serverData)
-                        if(serverData["ID"] == message.guild.id) {message.reply("this server is already in the database"); return;}
-                        else {
-                            
-                            database.ref('/Servers').push({
-                            "ID": message.guild.id,
-                            "Name": message.guild.name,
-                            "LogChannel": null
-                            })
-                            const embed = new Discord.MessageEmbed()
-                            .setColor(embedColour)
-                            .setDescription(message.guild.name + " has successfully been added to the database");
-                            message.channel.send(embed);
-                            return;
-                        }
+                    console.log(serverData)
+                    if (serverData["ID"] == message.guild.id) { message.reply("this server is already in the database"); return; }
                 }
+
+                database.ref('/Servers').push({
+                    "ID": message.guild.id,
+                    "Name": message.guild.name,
+                    "LogChannel": null
+                })
+                const embed = new Discord.MessageEmbed()
+                    .setColor(embedColour)
+                    .setDescription(message.guild.name + " has successfully been added to the database");
+                message.channel.send(embed);
+                return;
+
+                
                 database.goOffline();
             })
 
