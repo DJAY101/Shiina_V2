@@ -209,7 +209,7 @@ client.on('messageDelete', async message => {
 })
 
 client.on('messageUpdate', async (oldMsg, newMsg) => {
-    if(newMsg.author.bot || message.guild == null) return;
+    if(newMsg.author.bot || oldMsg.guild == null) return;
     database.goOnline();
     await database.ref("/Servers").once("value", async (data) =>{
         for(const[key, serverData] of Object.entries(data.val())) {
