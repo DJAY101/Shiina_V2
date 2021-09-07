@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Shiina says',
 	execute(message, args, mentions, client) {
         if (message.member.hasPermission("ADMINISTRATOR")) {
-            message.delete();
+            message.delete().catch((err)=>console.log(err));
             msg = message.content.slice(prefix.length + 5)
             const embed = new Discord.MessageEmbed()
                 .setColor(embedColour)

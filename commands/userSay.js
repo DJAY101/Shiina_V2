@@ -5,7 +5,7 @@ module.exports = {
 	description: 'The user says',
     DMCommand: true,
 	execute(message, args, mentions, client) {
-        message.delete();
+        message.delete().catch((err)=>console.log(err));
         msg = message.content.slice(prefix.length + 4)
 		const embed = new Discord.MessageEmbed()
             .setColor(embedColour)
