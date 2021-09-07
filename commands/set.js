@@ -44,6 +44,7 @@ module.exports = {
                                     return;
                                 }
                             }
+                            message.reply("This server isn't setup yet, call shiina setup :3")
                         } else {message.reply("I can't find that channel")}
                     })
                     database.goOffline();
