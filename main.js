@@ -10,7 +10,7 @@ const client = new Discord.Client; //Init Client
 client.commands = new Discord.Collection();
 
 const serviceAccount = require('./shiina-discord-bot-firebase-adminsdk-wg1mj-df7f037787.json');
-const individualActions = require('./commands/actionCommands/individualActions');
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://shiina-discord-bot-default-rtdb.firebaseio.com"
