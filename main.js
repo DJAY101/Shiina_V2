@@ -82,7 +82,7 @@ client.on('message', message => {
     let command = args.shift().toLowerCase();
     let mentions = [];
     const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill", "snuggle"];
-    const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peak":"peaking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking", "confused":"confused"}
+    const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peek":"peeking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking", "confused":"confused"}
     const questionCommands = ["is", "am", "are", "should", "will", "was", "do", "does", "you", "were"];
 
 
