@@ -92,6 +92,8 @@ client.on('message', message => {
     console.log(`Command: ${command}`);
     console.log(`Arguments: ${args.join(" ")}`);
     console.log(`Mentions: ${mentions}`);
+    const d = new Date();
+    console.log(`Time: ${d.getHours()}:${d.getMinutes()}, ${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`)
 
     // Shiina question n reply command
     if(questionCommands.includes(command)) {
