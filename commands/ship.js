@@ -12,7 +12,7 @@ module.exports = {
             if(personTwo == null) {personTwo = personOne; personOne = message.author.username};
 
             if(personTwo == message.author.username) {embed.setDescription("You can't ship yourself baka!"); message.channel.send(embed); return;}
-            if(personTwo == personOne) {embed.description("You can't ship the same person together, baka!"); message.channel.send(embed); return;}
+            if(personTwo == personOne) {embed.setDescription("You can't ship the same person together, baka!"); message.channel.send(embed); return;}
 
             const loveScore = Math.round(Math.random()*100);
             const good = ["Cute couples! ❤️", "All I see is love! ❤️", "Get together already!! ❤️", "Wow, looks like another couple ❤️", "You guy's fit! ❤️", "❤️❤️❤️ ", "Romantic! ❤️"];
