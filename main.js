@@ -83,7 +83,7 @@ client.on('message', message => {
     let mentions = [];
     const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill", "snuggle"];
     const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peek":"peeking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking", "confused":"confused", "angry":"angry"}
-    const questionCommands = ["im", "can", "is", "am", "are", "should", "will", "was", "do", "does", "you", "were"];
+    const questionCommands = ["wanna", "im", "can", "is", "am", "are", "should", "will", "was", "do", "does", "you", "were"];
 
 
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
