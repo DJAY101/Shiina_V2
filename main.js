@@ -83,7 +83,7 @@ client.on('message', message => {
     let mentions = [];
     const actionCommands = ["hug", "peck", "poke", "pat", "kiss", "slap", "punch", "cuddle", "kill", "snuggle"];
     const individualAction = {"blush":"blushing", "cry":"crying", "hide":"hiding", "peek":"peeking", "smug":"smug", "smirk":"smirking", "smile":"smiling", "sad":"sad", "dead":"dead", "wave":"waving", "run":"running away", "laugh":"laughing", "pout":"pouting", "chuckle":"chuckling", "think":"thinking", "confused":"confused"}
-    const questionCommands = ["is", "am", "are", "should", "will", "was", "do", "does", "you", "were"];
+    const questionCommands = ["im", "can", "is", "am", "are", "should", "will", "was", "do", "does", "you", "were"];
 
 
     if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return; //checks for prefix and msg author is not itself otherwise end
@@ -92,6 +92,8 @@ client.on('message', message => {
     console.log(`Command: ${command}`);
     console.log(`Arguments: ${args.join(" ")}`);
     console.log(`Mentions: ${mentions}`);
+    const d = new Date();
+    console.log(`Time: ${d.getHours()}:${d.getMinutes()}, ${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`)
 
     // Shiina question n reply command
     if(questionCommands.includes(command)) {

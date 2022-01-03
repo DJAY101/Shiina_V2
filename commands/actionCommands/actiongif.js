@@ -7,6 +7,7 @@ module.exports = {
 	description: 'actionGif another user',
 	DMCommand: true,
 	execute(message, args, mentions, client, tenor, command) {
+        args[0]=args[0].toLowerCase();
         let args1 = clean(message.content).slice(prefix.length).trim().split(' ');
         let action = args1.shift().toLowerCase();
         if(!mentions[0] && args[0] != "me") {message.channel.send("Who do you want to " +action +"?"); return;}
