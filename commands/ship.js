@@ -29,7 +29,7 @@ module.exports = {
 
         } else {
 
-            embed.description("who am I shipping?")
+            embed.setDescription("who am I shipping?")
 
         }
         message.channel.send(embed)
